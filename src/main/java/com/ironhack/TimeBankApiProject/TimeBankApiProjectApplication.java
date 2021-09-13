@@ -1,13 +1,13 @@
-package com.ironhack.TImeBankApiProject;
+package com.ironhack.TimeBankApiProject;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TImeBankApiProjectApplication {
+public class TimeBankApiProjectApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TImeBankApiProjectApplication.class, args);
+		SpringApplication.run(TimeBankApiProjectApplication.class, args);
 	}
 
 }
