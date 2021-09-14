@@ -25,6 +25,9 @@ public class AccountHolder extends User{
     private LocalDate dateOfBirth;
     @NotNull @NotBlank @NotEmpty @Column(name = "primary_address")
     private Address primaryAddress;
+    @Column(name = "mailing_address")
     private Address mailingAddress;
+
+
 
 }

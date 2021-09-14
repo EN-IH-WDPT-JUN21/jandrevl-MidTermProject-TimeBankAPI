@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@MappedSuperclass
+@Entity
 public class User {
 
     @Id
