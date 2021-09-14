@@ -2,6 +2,8 @@ package com.ironhack.TimeBankApiProject.dao;
 
 
 import com.ironhack.TimeBankApiProject.enums.AccountStatus;
+import com.ironhack.TimeBankApiProject.utils.Money;
+import com.ironhack.TimeBankApiProject.utils.PasswordUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,27 +26,49 @@ public abstract class Account {
     @Column(name = "account_number")
     private Long accountNumber;
 
-    @Column(name = "primary_owner")
+//    @Column(name = "primary_owner")
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "primary_owner")
     private AccountHolder primaryOwner;
 
-    @Column(name = "secondary_owner")
+//    @Column(name = "secondary_owner")
+    @ManyToOne
+    @JoinColumn(name = "secondary_owner")
     private AccountHolder secondaryOwner;
 
-    private BigDecimal balance;
+    private BigDecimal balance = BigDecimal.ZERO;
 
     @Column(name = "penalty_fee")
-    private final BigDecimal penaltyFee = BigDecimal.valueOf(40);
+    private final BigDecimal penaltyFee = new BigDecimal("40");
 
     @Column(name = "minimum_balance")
-    private BigDecimal minimumBalance;
+    protected BigDecimal minimumBalance;
 
     @Column(name = "creation_date")
-    private LocalDate creationDate;
+    private LocalDate creationDate = LocalDate.now();
 
     @Column(name = "secret_key")
     private String secretKey;
 
     @Column(name = "account_status")
-    private AccountStatus status;
+    @Enumerated(value = EnumType.STRING)
+    private AccountStatus status = AccountStatus.ACTIVE;
+
+
+
+    public Account (AccountHolder primaryOwner, AccountHolder secondaryOwner, String secretKey) {
+        setPrimaryOwner(primaryOwner);
+        setSecondaryOwner(secondaryOwner);
+        setSecretKey(secretKey);
+
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = PasswordUtil.encryptPassword(secretKey);
+
+    }
+
+
+
 }

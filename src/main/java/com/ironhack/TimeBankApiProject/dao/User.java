@@ -22,8 +22,8 @@ public class User {
     private Long id;
     private String username;
     private String password;
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Role> roles;
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Role role;
 
 
 

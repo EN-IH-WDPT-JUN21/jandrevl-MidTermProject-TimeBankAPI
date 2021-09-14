@@ -5,8 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -23,10 +22,14 @@ public class AccountHolder extends User{
     private String name;
     @NotNull @NotBlank @NotEmpty @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
-    @NotNull @NotBlank @NotEmpty @Column(name = "primary_address")
+    @NotNull @NotBlank @NotEmpty
+    @ManyToOne
+    @JoinColumn(name = "primary_address_id")
     private Address primaryAddress;
-    @Column(name = "mailing_address")
+    @ManyToOne
+    @JoinColumn(name = "mailing_address_id")
     private Address mailingAddress;
+
 
 
 
