@@ -26,18 +26,18 @@ public abstract class Account {
     @Column(name = "account_number")
     private Long accountNumber;
 
-//    @Column(name = "primary_owner")
     @NotNull
     @ManyToOne
     @JoinColumn(name = "primary_owner")
     private AccountHolder primaryOwner;
 
-//    @Column(name = "secondary_owner")
     @ManyToOne
     @JoinColumn(name = "secondary_owner")
     private AccountHolder secondaryOwner;
 
-    private BigDecimal balance = BigDecimal.ZERO;
+    @Embedded
+    @AttributeOverride( name = "amount", column = @Column(name = "balance"))
+    private Money balance;
 
     @Column(name = "penalty_fee")
     private final BigDecimal penaltyFee = new BigDecimal("40");
@@ -46,23 +46,36 @@ public abstract class Account {
     protected BigDecimal minimumBalance;
 
     @Column(name = "creation_date")
-    private LocalDate creationDate = LocalDate.now();
+    private LocalDate creationDate;
 
     @Column(name = "secret_key")
     private String secretKey;
 
     @Column(name = "account_status")
     @Enumerated(value = EnumType.STRING)
-    private AccountStatus status = AccountStatus.ACTIVE;
+    private AccountStatus status;
 
 
-
+    //Constructor for accounts with 2 Owners
     public Account (AccountHolder primaryOwner, AccountHolder secondaryOwner, String secretKey) {
         setPrimaryOwner(primaryOwner);
         setSecondaryOwner(secondaryOwner);
         setSecretKey(secretKey);
-
+        this.status = AccountStatus.ACTIVE;
+        this.creationDate = LocalDate.now();
+        this.balance = new Money(BigDecimal.ZERO);
     }
+
+    //Constructor for accounts with 1 Owner only
+    public Account (AccountHolder primaryOwner, String secretKey) {
+        setPrimaryOwner(primaryOwner);
+        setSecretKey(secretKey);
+        this.status = AccountStatus.ACTIVE;
+        this.creationDate = LocalDate.now();
+        this.balance = new Money(BigDecimal.ZERO);
+    }
+
+
 
     public void setSecretKey(String secretKey) {
         this.secretKey = PasswordUtil.encryptPassword(secretKey);

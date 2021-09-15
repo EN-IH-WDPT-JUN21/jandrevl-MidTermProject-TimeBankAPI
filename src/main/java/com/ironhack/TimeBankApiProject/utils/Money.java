@@ -2,11 +2,12 @@ package com.ironhack.TimeBankApiProject.utils;
 
 import org.hibernate.annotations.Type;
 
+import javax.persistence.Embeddable;
 import java.math.RoundingMode;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-
+@Embeddable()
 public class Money {
 
     private static final Currency EUR = Currency.getInstance("EUR");
