@@ -18,9 +18,6 @@ import java.time.LocalDate;
 @Setter
 public class AccountHolder extends User{
 
-    @NotNull @NotBlank @NotEmpty
-    private String name;
-
     @NotNull @NotBlank @NotEmpty @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
@@ -34,18 +31,16 @@ public class AccountHolder extends User{
     private Address mailingAddress;
 
     //Constructor for Account Holder with primary address only
-    public AccountHolder(String username, String password, Role role, String name,
+    public AccountHolder(String name, String username, String password, Role role,
                          LocalDate dateOfBirth, Address primaryAddress) {
-        super(username, password, role);
-        setName(name);
+        super(name, username, password, role);
         setDateOfBirth(dateOfBirth);
         setPrimaryAddress(primaryAddress);
     }
     // Constructor for Account Holders with both addresses
-    public AccountHolder(String username, String password, Role role, String name,
+    public AccountHolder(String name, String username, String password, Role role,
                          LocalDate dateOfBirth, Address primaryAddress, Address mailingAddress) {
-        super(username, password, role);
-        setName(name);
+        super(name, username, password, role);
         setDateOfBirth(dateOfBirth);
         setPrimaryAddress(primaryAddress);
         setMailingAddress(mailingAddress);

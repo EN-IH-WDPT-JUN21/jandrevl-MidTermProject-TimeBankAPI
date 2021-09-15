@@ -10,16 +10,14 @@ import javax.persistence.Entity;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class Admin extends User{
 
-    @Column(name = "admin_name")
-    private String name;
 
-    public Admin (String username, String password, Role role, String name) {
-        super(username, password, role);
-        setName(name);
+
+    public Admin (String name, String username, String password, Role role) {
+        super(name, username, password, role);
+
     }
 }
