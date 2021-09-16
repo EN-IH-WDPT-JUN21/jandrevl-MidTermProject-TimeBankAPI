@@ -24,7 +24,7 @@ public class Address {
 
     @NotEmpty
     @NotBlank
-    private String address;
+    private String streetAndNumber;
 
     @NotEmpty
     @NotBlank
@@ -38,5 +38,12 @@ public class Address {
     @NotEmpty
     @NotBlank
     private String country;
+
+    public Address (String streetAndNumber, Long zipCode, String city, String country) {
+        setStreetAndNumber(streetAndNumber);
+        setZipCode(zipCode);
+        setCity(city);
+        setCountry(country);
+    }
 
 }

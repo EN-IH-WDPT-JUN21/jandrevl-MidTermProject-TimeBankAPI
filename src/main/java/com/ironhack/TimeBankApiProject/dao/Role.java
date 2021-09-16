@@ -25,5 +25,10 @@ public class Role {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Role(String roleName, User user) {
+        setRoleName(roleName);
+        setUser(user);
+    }
+
 
 }

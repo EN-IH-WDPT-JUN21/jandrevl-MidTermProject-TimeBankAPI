@@ -1,16 +1,12 @@
 package com.ironhack.TimeBankApiProject.dao;
 
-
 import com.ironhack.TimeBankApiProject.utils.Money;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,16 +14,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Statement {
+public class SavingsAccountStatement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionId;
 
-    private Account account;
+    @ManyToOne
+    @JoinColumn(name = "account")
+    private SavingsAccount account;
 
     private LocalDateTime momentOfTransaction;
 
+    @Embedded
     private Money amount;
 
 
