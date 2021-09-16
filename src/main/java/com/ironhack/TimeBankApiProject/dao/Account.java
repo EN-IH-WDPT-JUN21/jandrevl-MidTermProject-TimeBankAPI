@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
+@Setter()
 @MappedSuperclass
 public abstract class Account {
 

@@ -30,4 +30,5 @@ public class Statement {
 
     private Money amount;
 
+
 }
