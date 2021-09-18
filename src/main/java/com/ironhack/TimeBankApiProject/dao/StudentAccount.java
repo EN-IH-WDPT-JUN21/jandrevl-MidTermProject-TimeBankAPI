@@ -15,12 +15,12 @@ import java.math.BigDecimal;
 @Setter
 public class StudentAccount extends Account{
 
-    public StudentAccount(AccountHolder primaryOwner, String secretKey) {
+    public StudentAccount(User primaryOwner, String secretKey) {
         super(primaryOwner, secretKey);
         this.minimumBalance = BigDecimal.ZERO;
     }
 
-    public StudentAccount(AccountHolder primaryOwner, AccountHolder secondaryOwner, String secretKey) {
+    public StudentAccount(User primaryOwner, User secondaryOwner, String secretKey) {
         super(primaryOwner, secondaryOwner, secretKey);
         this.minimumBalance = BigDecimal.ZERO;
     }

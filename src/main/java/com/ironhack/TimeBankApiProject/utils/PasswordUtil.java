@@ -6,7 +6,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class PasswordUtil {
 
     public static String encryptPassword(String password) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.encode(password);
     }
+
+
 }

@@ -23,14 +23,14 @@ public class CheckingAccount extends Account {
 //private LocalDate dateOfLastMaintenanceFee; ver o artigo sobre @Scheduled que o Salva me enviou
 
     //Constructor for checking accounts with 2 owners
-    public CheckingAccount (AccountHolder primaryOwner, AccountHolder secondaryOwner,
+    public CheckingAccount (User primaryOwner, User secondaryOwner,
                             String secretKey) {
         super(primaryOwner, secondaryOwner, secretKey);
         this.minimumBalance = new BigDecimal("250");
     }
 
     //Constructor for checking accounts with only 1 owner
-    public CheckingAccount (AccountHolder primaryOwner,
+    public CheckingAccount (User primaryOwner,
                             String secretKey) {
         super(primaryOwner, secretKey);
         this.minimumBalance = new BigDecimal("250");

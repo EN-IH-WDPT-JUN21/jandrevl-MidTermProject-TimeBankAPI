@@ -22,7 +22,7 @@ public class CreditCardAccount extends Account{
     private BigDecimal interestRate;
 
     //Constructor for checking accounts with 2 owners, default creditLimit, default interestRate
-    public CreditCardAccount (AccountHolder primaryOwner, AccountHolder secondaryOwner,
+    public CreditCardAccount (User primaryOwner, User secondaryOwner,
                            String secretKey) {
         super(primaryOwner, secondaryOwner, secretKey);
         this.minimumBalance = new BigDecimal("0");
@@ -32,7 +32,7 @@ public class CreditCardAccount extends Account{
     }
 
     //Constructor for checking accounts with only 1 owner, default creditLimit, default interestRate
-    public CreditCardAccount (AccountHolder primaryOwner,
+    public CreditCardAccount (User primaryOwner,
                            String secretKey) {
         super(primaryOwner, secretKey);
         this.minimumBalance = new BigDecimal("0");
@@ -42,7 +42,7 @@ public class CreditCardAccount extends Account{
     }
 
     //Constructor for checking accounts with 2 owners, custom creditLimit, custom interestRate
-    public CreditCardAccount (AccountHolder primaryOwner, AccountHolder secondaryOwner,
+    public CreditCardAccount (User primaryOwner, User secondaryOwner,
                               String secretKey, BigDecimal interestRate, BigDecimal creditLimit) {
         super(primaryOwner, secondaryOwner, secretKey);
         this.minimumBalance = new BigDecimal("0");
@@ -52,7 +52,7 @@ public class CreditCardAccount extends Account{
     }
 
     //Constructor for checking accounts with only 1 owner, custom creditLimit, custom interestRate
-    public CreditCardAccount (AccountHolder primaryOwner,
+    public CreditCardAccount (User primaryOwner,
                               String secretKey, BigDecimal interestRate, BigDecimal creditLimit) {
         super(primaryOwner, secretKey);
         this.minimumBalance = new BigDecimal("0");

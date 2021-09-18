@@ -19,14 +19,15 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "role_name")
-    private String roleName;
-    @OneToOne
+
+    private String name;
+
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Role(String roleName, User user) {
-        setRoleName(roleName);
+    public Role(String name, User user) {
+        setName(name);
         setUser(user);
     }
 

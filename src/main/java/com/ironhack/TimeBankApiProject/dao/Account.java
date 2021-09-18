@@ -29,11 +29,11 @@ public abstract class Account {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "primary_owner")
-    private AccountHolder primaryOwner;
+    private User primaryOwner;
 
     @ManyToOne
     @JoinColumn(name = "secondary_owner")
-    private AccountHolder secondaryOwner;
+    private User secondaryOwner;
 
     @Embedded
     @AttributeOverride( name = "amount", column = @Column(name = "balance"))
@@ -57,7 +57,7 @@ public abstract class Account {
 
 
     //Constructor for accounts with 2 Owners
-    public Account (AccountHolder primaryOwner, AccountHolder secondaryOwner, String secretKey) {
+    public Account (User primaryOwner, User secondaryOwner, String secretKey) {
         setPrimaryOwner(primaryOwner);
         setSecondaryOwner(secondaryOwner);
         setSecretKey(secretKey);
@@ -67,7 +67,7 @@ public abstract class Account {
     }
 
     //Constructor for accounts with 1 Owner only
-    public Account (AccountHolder primaryOwner, String secretKey) {
+    public Account (User primaryOwner, String secretKey) {
         setPrimaryOwner(primaryOwner);
         setSecretKey(secretKey);
         this.status = AccountStatus.ACTIVE;
@@ -77,10 +77,10 @@ public abstract class Account {
 
 
 
-    public void setSecretKey(String secretKey) {
-        this.secretKey = PasswordUtil.encryptPassword(secretKey);
-
-    }
+//    public void setSecretKey(String secretKey) {
+//        this.secretKey = PasswordUtil.encryptPassword(secretKey);
+//
+//    }
 
 
 

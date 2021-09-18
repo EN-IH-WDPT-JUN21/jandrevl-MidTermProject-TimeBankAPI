@@ -23,7 +23,7 @@ public class SavingsAccount extends Account{
     private BigDecimal interestRate;
 
     //Constructor for checking accounts with 2 owners, default minimum Balance, default interestRate
-    public SavingsAccount (AccountHolder primaryOwner, AccountHolder secondaryOwner,
+    public SavingsAccount (User primaryOwner, User secondaryOwner,
                             String secretKey) {
         super(primaryOwner, secondaryOwner, secretKey);
         this.minimumBalance = new BigDecimal("1000");
@@ -31,7 +31,7 @@ public class SavingsAccount extends Account{
     }
 
     //Constructor for checking accounts with only 1 owner
-    public SavingsAccount (AccountHolder primaryOwner,
+    public SavingsAccount (User primaryOwner,
                             String secretKey) {
         super(primaryOwner, secretKey);
         this.minimumBalance = new BigDecimal("1000");
@@ -39,7 +39,7 @@ public class SavingsAccount extends Account{
     }
 
     //Constructor for checking accounts with 2 owners and custom interest and minimumBalance
-    public SavingsAccount (AccountHolder primaryOwner, AccountHolder secondaryOwner,
+    public SavingsAccount (User primaryOwner, User secondaryOwner,
                            String secretKey, BigDecimal minimumBalance, BigDecimal interestRate) {
         super(primaryOwner, secondaryOwner, secretKey);
         setMinimumBalance(minimumBalance);
@@ -48,7 +48,7 @@ public class SavingsAccount extends Account{
     }
 
     //Constructor for checking accounts with 1 owner and custom interest and minimumBalance
-    public SavingsAccount (AccountHolder primaryOwner,
+    public SavingsAccount (User primaryOwner,
                            String secretKey, BigDecimal minimumBalance, BigDecimal interestRate) {
         super(primaryOwner, secretKey);
         setMinimumBalance(minimumBalance);

@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Set;
 
 
@@ -16,27 +20,71 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public abstract class User {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String username;
-    private String password;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @JoinColumn(name = "role")
-    private Role role;
 
-    public User(String name, String username, String password, Role role) {
+    private String name;
+
+    private String username;
+
+    private String password;
+
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+
+    @ManyToOne
+    @JoinColumn(name = "primary_address_id")
+    private Address primaryAddress;
+
+    @ManyToOne
+    @JoinColumn(name = "mailing_address_id")
+    private Address mailingAddress;
+
+    @Column(name = "hashed_key_third_party")
+    private String hashedKey;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Role> roles;
+
+
+    //ADMIN constructor
+    public User(String name, String username, String password, Set<Role> roles) {
         setName(name);
         setUsername(username);
         setPassword(password);
-        setRole(role);
+        setRoles(roles);
+    }
+
+    //ACCOUNTHOLDER constructor
+    public User(String name, String username, String password, Set<Role> roles,
+                         LocalDate dateOfBirth, Address primaryAddress, Address mailingAddress) {
+        setName(name);
+        setUsername(username);
+        setPassword(password);
+        setRoles(roles);
+        setDateOfBirth(dateOfBirth);
+        setPrimaryAddress(primaryAddress);
+        setMailingAddress(mailingAddress);
+    }
+
+    //THIRDPARTY constructor
+    public User (String name, String username, String password, Set<Role> roles, String hashedKey) {
+        setName(name);
+        setUsername(username);
+        setPassword(password);
+        setRoles(roles);
+        setHashedKey(hashedKey);
     }
 
     public void setPassword(String password) {
         this.password = PasswordUtil.encryptPassword(password);
+    }
+
+    public void setHashedKey(String hashedKey) {
+        this.hashedKey = PasswordUtil.encryptPassword(hashedKey);
     }
 
 

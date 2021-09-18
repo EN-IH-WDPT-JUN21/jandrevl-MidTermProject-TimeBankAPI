@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AdminController implements IAdminController {
 
-    @GetMapping("/")
+    @GetMapping("/hello-world")
     @ResponseStatus(HttpStatus.OK)
     public String printHelloTimeBank() {
         return "Dear Customer,\n\nWelcome to TimeBank!!";
