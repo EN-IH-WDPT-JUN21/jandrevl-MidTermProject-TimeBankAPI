@@ -1,6 +1,7 @@
 package com.ironhack.TimeBankApiProject.dao;
 
 
+import com.ironhack.TimeBankApiProject.enums.RoleTypes;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,14 +20,15 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String name;
+    @Column(name = "role_name")
+    @Enumerated(value = EnumType.STRING)
+    private RoleTypes name;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Role(String name, User user) {
+    public Role(RoleTypes name, User user) {
         setName(name);
         setUser(user);
     }

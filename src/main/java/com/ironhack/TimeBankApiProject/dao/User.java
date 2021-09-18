@@ -51,31 +51,31 @@ public class User {
 
 
     //ADMIN constructor
-    public User(String name, String username, String password, Set<Role> roles) {
+    public User(String name, String username, String password) {
         setName(name);
         setUsername(username);
         setPassword(password);
-        setRoles(roles);
+//        setRoles(roles);
     }
 
     //ACCOUNTHOLDER constructor
-    public User(String name, String username, String password, Set<Role> roles,
+    public User(String name, String username, String password,
                          LocalDate dateOfBirth, Address primaryAddress, Address mailingAddress) {
         setName(name);
         setUsername(username);
         setPassword(password);
-        setRoles(roles);
+//        setRoles(roles);
         setDateOfBirth(dateOfBirth);
         setPrimaryAddress(primaryAddress);
         setMailingAddress(mailingAddress);
     }
 
     //THIRDPARTY constructor
-    public User (String name, String username, String password, Set<Role> roles, String hashedKey) {
+    public User (String name, String username, String password, String hashedKey) {
         setName(name);
         setUsername(username);
         setPassword(password);
-        setRoles(roles);
+//        setRoles(roles);
         setHashedKey(hashedKey);
     }
 

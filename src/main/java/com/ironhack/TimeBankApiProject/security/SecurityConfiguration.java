@@ -42,6 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
                 .mvcMatchers(HttpMethod.GET, "/hello-world").authenticated()
+                .mvcMatchers(HttpMethod.GET, "/thirdparty").hasAnyRole("THIRDPARTY")
 //                .mvcMatchers(HttpMethod.GET, "/**").hasAnyRole("ADMIN")
                 .anyRequest().permitAll();
     }

@@ -1,6 +1,8 @@
 package com.ironhack.TimeBankApiProject;
 
+import com.ironhack.TimeBankApiProject.dao.Role;
 import com.ironhack.TimeBankApiProject.dao.User;
+import com.ironhack.TimeBankApiProject.enums.RoleTypes;
 import com.ironhack.TimeBankApiProject.repository.RoleRepository;
 import com.ironhack.TimeBankApiProject.repository.UserRepository;
 import com.ironhack.TimeBankApiProject.utils.PasswordUtil;
@@ -35,11 +37,13 @@ public class TimeBankApiProjectApplication implements CommandLineRunner {
 //		admin1.setPassword(hashedPassword);
 //		userRepository.save(admin1);
 
-
-
-
-
-
+//		User thirdPartyUser = new User("Banco Santander", "santander", "password",
+//				"password");
+//
+//		userRepository.save(thirdPartyUser);
+//
+//		Role thirdParty = new Role (RoleTypes.THIRDPARTY, userRepository.findByUsername("santander").get());
+//		roleRepository.save(thirdParty);
 
 
 	}
