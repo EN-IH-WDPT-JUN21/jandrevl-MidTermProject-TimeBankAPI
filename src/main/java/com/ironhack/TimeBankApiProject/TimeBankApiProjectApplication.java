@@ -1,15 +1,20 @@
 package com.ironhack.TimeBankApiProject;
 
+import com.ironhack.TimeBankApiProject.dao.CheckingAccount;
 import com.ironhack.TimeBankApiProject.dao.Role;
 import com.ironhack.TimeBankApiProject.dao.User;
 import com.ironhack.TimeBankApiProject.enums.RoleTypes;
+import com.ironhack.TimeBankApiProject.repository.CheckingAccountRepository;
 import com.ironhack.TimeBankApiProject.repository.RoleRepository;
 import com.ironhack.TimeBankApiProject.repository.UserRepository;
+import com.ironhack.TimeBankApiProject.utils.Money;
 import com.ironhack.TimeBankApiProject.utils.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.math.BigDecimal;
 
 @SpringBootApplication
 public class TimeBankApiProjectApplication implements CommandLineRunner {
@@ -19,6 +24,9 @@ public class TimeBankApiProjectApplication implements CommandLineRunner {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	CheckingAccountRepository checkingAccountRepository;
 
 
 
@@ -44,6 +52,12 @@ public class TimeBankApiProjectApplication implements CommandLineRunner {
 //
 //		Role thirdParty = new Role (RoleTypes.THIRDPARTY, userRepository.findByUsername("santander").get());
 //		roleRepository.save(thirdParty);
+
+//		CheckingAccount checkingAccount1 = new CheckingAccount(userRepository.getById(2L), "password");
+//		BigDecimal balance = new BigDecimal("5500000");
+//		Money newBalance = new Money(balance);
+//		checkingAccount1.setBalance(newBalance);
+//		checkingAccountRepository.save(checkingAccount1);
 
 
 	}

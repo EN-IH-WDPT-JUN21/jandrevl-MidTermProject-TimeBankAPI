@@ -1,6 +1,7 @@
 package com.ironhack.TimeBankApiProject.dao;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ironhack.TimeBankApiProject.enums.RoleTypes;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,12 +21,14 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "role_name")
     @Enumerated(value = EnumType.STRING)
     private RoleTypes name;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     public Role(RoleTypes name, User user) {

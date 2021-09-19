@@ -2,6 +2,7 @@ package com.ironhack.TimeBankApiProject.dao;
 
 
 import com.ironhack.TimeBankApiProject.enums.AccountStatus;
+import com.ironhack.TimeBankApiProject.utils.Constants;
 import com.ironhack.TimeBankApiProject.utils.Money;
 import com.ironhack.TimeBankApiProject.utils.PasswordUtil;
 import lombok.AllArgsConstructor;
@@ -40,7 +41,7 @@ public abstract class Account {
     private Money balance;
 
     @Column(name = "penalty_fee")
-    private final BigDecimal penaltyFee = new BigDecimal("40");
+    private final BigDecimal penaltyFee = Constants.penaltyFee;
 
     @Column(name = "minimum_balance")
     protected BigDecimal minimumBalance;
@@ -77,10 +78,10 @@ public abstract class Account {
 
 
 
-//    public void setSecretKey(String secretKey) {
-//        this.secretKey = PasswordUtil.encryptPassword(secretKey);
-//
-//    }
+    public void setSecretKey(String secretKey) {
+        this.secretKey = PasswordUtil.encryptPassword(secretKey);
+
+    }
 
 
 

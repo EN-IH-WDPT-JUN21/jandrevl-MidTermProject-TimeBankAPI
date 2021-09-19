@@ -1,6 +1,7 @@
 package com.ironhack.TimeBankApiProject.dao;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ironhack.TimeBankApiProject.utils.PasswordUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,6 +48,7 @@ public class User {
     private String hashedKey;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Set<Role> roles;
 
 

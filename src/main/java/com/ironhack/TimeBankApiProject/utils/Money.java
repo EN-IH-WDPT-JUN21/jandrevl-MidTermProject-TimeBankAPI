@@ -1,5 +1,7 @@
 package com.ironhack.TimeBankApiProject.utils;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Embeddable;
@@ -7,13 +9,16 @@ import java.math.RoundingMode;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-@Embeddable()
+@Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
 public class Money {
 
     private static final Currency EUR = Currency.getInstance("EUR");
     private static final RoundingMode DEFAULT_ROUNDING = RoundingMode.HALF_EVEN;
 
-    private final Currency currency;
+//    private final Currency currency;
+    private Currency currency;
     private BigDecimal amount;
 
     /**

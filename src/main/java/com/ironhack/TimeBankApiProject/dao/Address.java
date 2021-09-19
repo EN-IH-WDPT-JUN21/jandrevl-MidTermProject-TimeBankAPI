@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @AllArgsConstructor
@@ -26,9 +28,11 @@ public class Address {
     @NotBlank
     private String streetAndNumber;
 
-    @NotEmpty
-    @NotBlank
+//    @NotEmpty
+//    @NotBlank
+    @NotNull
     @Column(name = "zip_code")
+    @Digits(integer = 4, fraction = 0, message = "Invalid zip code")
     private Long zipCode;
 
     @NotEmpty

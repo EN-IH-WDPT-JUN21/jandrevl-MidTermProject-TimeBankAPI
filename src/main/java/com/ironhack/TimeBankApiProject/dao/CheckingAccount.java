@@ -1,6 +1,7 @@
 package com.ironhack.TimeBankApiProject.dao;
 
 
+import com.ironhack.TimeBankApiProject.utils.Constants;
 import com.ironhack.TimeBankApiProject.utils.Money;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import java.time.LocalDate;
 public class CheckingAccount extends Account {
 
     @Column(name = "monthly_maintenance_fee")
-    private final BigDecimal monthlyMaintenanceFee = new BigDecimal("12");
+    private final BigDecimal monthlyMaintenanceFee = Constants.monthlyMaintenanceFee;
 
 //private LocalDate dateOfLastMaintenanceFee; ver o artigo sobre @Scheduled que o Salva me enviou
 
