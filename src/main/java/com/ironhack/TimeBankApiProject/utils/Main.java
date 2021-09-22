@@ -13,8 +13,12 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Money money = new Money(new BigDecimal("5500000"));
-        System.out.println(money.toString());
+//        Money money = new Money(new BigDecimal("5500000"));
+//        System.out.println(money.toString());
+
+        System.out.println(PasswordUtil.encryptPassword("password"));
+
+
 
     }
 

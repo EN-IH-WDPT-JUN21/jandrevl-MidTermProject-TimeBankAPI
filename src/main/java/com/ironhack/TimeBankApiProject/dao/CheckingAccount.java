@@ -27,14 +27,14 @@ public class CheckingAccount extends Account {
     public CheckingAccount (User primaryOwner, User secondaryOwner,
                             String secretKey) {
         super(primaryOwner, secondaryOwner, secretKey);
-        this.minimumBalance = new BigDecimal("250");
+        setMinimumBalance(new BigDecimal("250"));
     }
 
     //Constructor for checking accounts with only 1 owner
     public CheckingAccount (User primaryOwner,
                             String secretKey) {
         super(primaryOwner, secretKey);
-        this.minimumBalance = new BigDecimal("250");
+        setMinimumBalance(new BigDecimal("250"));
     }
 
 

@@ -18,14 +18,14 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter()
+@Setter
 @MappedSuperclass
 public abstract class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_number")
-    private Long accountNumber;
+    protected Long accountNumber;
 
     @NotNull
     @ManyToOne
@@ -62,18 +62,18 @@ public abstract class Account {
         setPrimaryOwner(primaryOwner);
         setSecondaryOwner(secondaryOwner);
         setSecretKey(secretKey);
-        this.status = AccountStatus.ACTIVE;
-        this.creationDate = LocalDate.now();
-        this.balance = new Money(BigDecimal.ZERO);
+        setStatus(AccountStatus.ACTIVE);
+        setCreationDate(LocalDate.now());
+        setBalance(new Money(BigDecimal.ZERO));
     }
 
     //Constructor for accounts with 1 Owner only
     public Account (User primaryOwner, String secretKey) {
         setPrimaryOwner(primaryOwner);
         setSecretKey(secretKey);
-        this.status = AccountStatus.ACTIVE;
-        this.creationDate = LocalDate.now();
-        this.balance = new Money(BigDecimal.ZERO);
+        setStatus(AccountStatus.ACTIVE);
+        setCreationDate(LocalDate.now());
+        setBalance(new Money(BigDecimal.ZERO));
     }
 
 

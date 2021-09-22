@@ -13,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -47,7 +48,8 @@ public class User {
     @Column(name = "hashed_key_third_party")
     private String hashedKey;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @Column(name = "role")
     @JsonManagedReference
     private Set<Role> roles;
 
@@ -61,12 +63,12 @@ public class User {
     }
 
     //ACCOUNTHOLDER constructor
-    public User(String name, String username, String password,
-                         LocalDate dateOfBirth, Address primaryAddress, Address mailingAddress) {
+    public User(String name, String username, String password, LocalDate dateOfBirth,
+                Address primaryAddress, Address mailingAddress, Set roles) {
         setName(name);
         setUsername(username);
         setPassword(password);
-//        setRoles(roles);
+        setRoles(roles);
         setDateOfBirth(dateOfBirth);
         setPrimaryAddress(primaryAddress);
         setMailingAddress(mailingAddress);
