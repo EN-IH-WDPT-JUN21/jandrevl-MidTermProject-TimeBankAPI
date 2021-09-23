@@ -5,6 +5,7 @@ import com.ironhack.TimeBankApiProject.utils.Constants;
 import com.ironhack.TimeBankApiProject.utils.Money;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class CheckingAccount extends Account {
@@ -39,7 +40,7 @@ public class CheckingAccount extends Account {
         super(primaryOwner, secretKey);
         setMinimumBalance(new BigDecimal("250"));
         setDateOfLastMaintenanceFee(LocalDate.now());
-
+//
     }
 
 

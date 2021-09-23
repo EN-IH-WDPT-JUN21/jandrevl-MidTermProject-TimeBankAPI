@@ -2,10 +2,12 @@ package com.ironhack.TimeBankApiProject.controller.impl;
 
 import com.ironhack.TimeBankApiProject.controller.dto.AccountDto;
 import com.ironhack.TimeBankApiProject.controller.dto.AccountHolderDto;
+import com.ironhack.TimeBankApiProject.controller.dto.BalanceDto;
 import com.ironhack.TimeBankApiProject.controller.interfaces.IAdminController;
 import com.ironhack.TimeBankApiProject.dao.*;
 import com.ironhack.TimeBankApiProject.enums.RoleTypes;
 import com.ironhack.TimeBankApiProject.repository.*;
+import com.ironhack.TimeBankApiProject.service.impl.AccountService;
 import com.ironhack.TimeBankApiProject.utils.Money;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +33,7 @@ public class AdminController implements IAdminController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    AccountHolderRepository accountHolderRepository;
+    private AccountHolderRepository accountHolderRepository;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
@@ -40,6 +42,9 @@ public class AdminController implements IAdminController {
     private SavingsAccountRepository savingsAccountRepository;
     @Autowired
     private CreditCardAccountRepository creditCardAccountRepository;
+    @Autowired
+    private AccountService accountService;
+
 
 
     @GetMapping("")
@@ -202,13 +207,7 @@ public class AdminController implements IAdminController {
                     secondaryOwner, secretKey, interestRate, creditLimit);
             return creditCardAccountRepository.save(creditCardAccount);
         }
-
-
-
-
     }
-
-
 
 
     private User getSecondaryOwnerIfNotNull(AccountDto accountDto) {
@@ -217,5 +216,15 @@ public class AdminController implements IAdminController {
             secondaryOwner = userRepository.findById(accountDto.getSecondaryOwnerId()).get();
         } else secondaryOwner = null;
         return secondaryOwner;
+    }
+
+
+    @PatchMapping("/accounts/balances/{accountNumber}")
+    @ResponseStatus(HttpStatus.OK)
+    public Account updateBalance(@PathVariable("accountNumber") Long accountNumber,
+                                 @RequestBody @Valid BalanceDto balanceDto) {
+        Money moneyBalance = new Money(balanceDto.getBalance());
+        return accountService.updateBalance(accountNumber, moneyBalance);
+
     }
 }
