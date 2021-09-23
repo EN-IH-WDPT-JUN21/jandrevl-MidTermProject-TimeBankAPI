@@ -16,11 +16,9 @@ public interface CheckingAccountRepository extends JpaRepository<CheckingAccount
 
 
 
-    Optional<CheckingAccount> findByAccountNumber(Long accountNumber);
+
 
 //    @Query(value = "SELECT * FROM checking_account INNER JOIN user ON checking_account.primary_owner = user.id WHERE checking_account.primary_owner = ':userId'", nativeQuery = true)
-    @Query(value = "SELECT a FROM CheckingAccount a INNER JOIN a.primaryOwner u WHERE a.primaryOwner.id = :userId")
-    List<CheckingAccount> findByPrimaryOwner(Long userId);
 
 
 }

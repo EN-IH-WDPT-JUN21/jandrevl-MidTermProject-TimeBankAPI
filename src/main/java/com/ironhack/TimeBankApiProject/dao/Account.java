@@ -19,7 +19,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account {
 
     @Id

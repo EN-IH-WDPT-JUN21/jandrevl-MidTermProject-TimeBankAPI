@@ -21,13 +21,16 @@ public class CheckingAccount extends Account {
     @Column(name = "monthly_maintenance_fee")
     private final BigDecimal monthlyMaintenanceFee = Constants.monthlyMaintenanceFee;
 
-//private LocalDate dateOfLastMaintenanceFee; ver o artigo sobre @Scheduled que o Salva me enviou
+    private LocalDate dateOfLastMaintenanceFee;
+
+// ver o artigo sobre @Scheduled que o Salva me enviou (Talvez não tenha tempo...)
 
     //Constructor for checking accounts with 2 owners
     public CheckingAccount (User primaryOwner, User secondaryOwner,
                             String secretKey) {
         super(primaryOwner, secondaryOwner, secretKey);
         setMinimumBalance(new BigDecimal("250"));
+        setDateOfLastMaintenanceFee(LocalDate.now());
     }
 
     //Constructor for checking accounts with only 1 owner
@@ -35,6 +38,8 @@ public class CheckingAccount extends Account {
                             String secretKey) {
         super(primaryOwner, secretKey);
         setMinimumBalance(new BigDecimal("250"));
+        setDateOfLastMaintenanceFee(LocalDate.now());
+
     }
 
 
