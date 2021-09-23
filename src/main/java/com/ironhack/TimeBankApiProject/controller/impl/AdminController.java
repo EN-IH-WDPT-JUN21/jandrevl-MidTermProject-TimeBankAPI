@@ -23,6 +23,7 @@ import java.util.Set;
 @RequestMapping("/admin")
 public class AdminController implements IAdminController {
 
+
     @Autowired
     private CheckingAccountRepository checkingAccountRepository;
     @Autowired
@@ -30,48 +31,23 @@ public class AdminController implements IAdminController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    AccountHolderRepository accountHolderRepository;
+    @Autowired
     private RoleRepository roleRepository;
     @Autowired
     private StudentAccountRepository studentAccountRepository;
     @Autowired
     private SavingsAccountRepository savingsAccountRepository;
+    @Autowired
+    private CreditCardAccountRepository creditCardAccountRepository;
 
 
-    @GetMapping("/")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public String printHelloTimeBank() {
         return "Dear Administrator,\n\nWelcome to TimeBank!! Use your Power wisely";
     }
 
-
-    @GetMapping("/accounts/checkingaccounts/balance/{accountNumber}")
-    @ResponseStatus(HttpStatus.OK)
-    public Money getBalanceByAccountNumber(@PathVariable(name = "accountNumber") Long accountNumber) {
-        Optional<CheckingAccount> optionalCheckingAccount = checkingAccountRepository.findByAccountNumber(accountNumber);
-        return optionalCheckingAccount.isPresent() ? optionalCheckingAccount.get().getBalance() : null;
-    }
-
-
-    @GetMapping("/accounts/checkingaccounts/primaryowner/{primaryOwner}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<CheckingAccount> getCheckingAccountsByPrimaryOwner(@PathVariable(name = "primaryOwner") Long userId) {
-        return checkingAccountRepository.findByPrimaryOwner(userId);
-    }
-
-
-    @GetMapping("/addresses/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Address getAddressByAddressId(@PathVariable(name = "id") Long id) {
-        Optional<Address> optionalAddress = addressRepository.findByAddressId(id);
-        return optionalAddress.isPresent() ? optionalAddress.get() : null;
-    }
-
-
-    @PostMapping("/addresses")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Address createAddress(@RequestBody @Valid Address address) {
-        return addressRepository.save(address);
-    }
 
 
     @GetMapping("/users/{id}")
@@ -105,7 +81,7 @@ public class AdminController implements IAdminController {
 
         String password = accountHolderDto.getPassword();
 
-        User user = new User(name, username, password, dateOfBirth, primaryAddress,
+        User user = new AccountHolder(name, username, password, dateOfBirth, primaryAddress,
                 mailingAddress, roles);
 
         Role role = new Role(RoleTypes.ACCOUNTHOLDER, user);
@@ -121,7 +97,7 @@ public class AdminController implements IAdminController {
     @ResponseStatus(HttpStatus.CREATED)
     public Account createCheckingAccount(@RequestBody @Valid AccountDto accountDto) {
 
-        User primaryOwner = userRepository.findById(accountDto.getPrimaryOwnerId()).get();
+        AccountHolder primaryOwner = accountHolderRepository.findById(accountDto.getPrimaryOwnerId()).get();
 
         if (primaryOwner.getDateOfBirth().plusYears(24).isAfter(LocalDate.now())) {
             return openStudentAccount(accountDto);
@@ -136,10 +112,7 @@ public class AdminController implements IAdminController {
 
         User primaryOwner = userRepository.findById(accountDto.getPrimaryOwnerId()).get();
 
-        User secondaryOwner;
-        if(accountDto.getSecondaryOwnerId() != null) {
-            secondaryOwner = userRepository.findById(accountDto.getSecondaryOwnerId()).get();
-        } else secondaryOwner = null;
+        User secondaryOwner = getSecondaryOwnerIfNotNull(accountDto);
 
         String secretKey = accountDto.getSecretKey();
 
@@ -153,10 +126,7 @@ public class AdminController implements IAdminController {
 
         User primaryOwner = userRepository.findById(accountDto.getPrimaryOwnerId()).get();
 
-        User secondaryOwner;
-        if(accountDto.getSecondaryOwnerId() != null) {
-            secondaryOwner = userRepository.findById(accountDto.getSecondaryOwnerId()).get();
-        } else secondaryOwner = null;
+        User secondaryOwner = getSecondaryOwnerIfNotNull(accountDto);
 
         String secretKey = accountDto.getSecretKey();
 
@@ -183,10 +153,7 @@ public class AdminController implements IAdminController {
 
         User primaryOwner = userRepository.findById(accountDto.getPrimaryOwnerId()).get();
 
-        User secondaryOwner;
-        if(accountDto.getSecondaryOwnerId() != null) {
-            secondaryOwner = userRepository.findById(accountDto.getSecondaryOwnerId()).get();
-        } else secondaryOwner = null;
+        User secondaryOwner = getSecondaryOwnerIfNotNull(accountDto);
 
         String secretKey = accountDto.getSecretKey();
 
@@ -199,10 +166,7 @@ public class AdminController implements IAdminController {
 
         User primaryOwner = userRepository.findById(accountDto.getPrimaryOwnerId()).get();
 
-        User secondaryOwner;
-        if(accountDto.getSecondaryOwnerId() != null) {
-            secondaryOwner = userRepository.findById(accountDto.getSecondaryOwnerId()).get();
-        } else secondaryOwner = null;
+        User secondaryOwner = getSecondaryOwnerIfNotNull(accountDto);
 
         String secretKey = accountDto.getSecretKey();
 
@@ -215,9 +179,43 @@ public class AdminController implements IAdminController {
     }
 
 
-//    @PostMapping("/accounts/creditcardaccounts")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public
+    @PostMapping("/accounts/creditcardaccounts")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreditCardAccount createCreditCardAccount(@RequestBody @Valid AccountDto accountDto) {
+
+        User primaryOwner = userRepository.findById(accountDto.getPrimaryOwnerId()).get();
+
+        User secondaryOwner = getSecondaryOwnerIfNotNull(accountDto);
+
+        String secretKey = accountDto.getSecretKey();
+
+        BigDecimal interestRate = accountDto.getInterestRate();
+
+        BigDecimal creditLimit = accountDto.getCreditLimit();
+
+        if (interestRate == null && creditLimit == null) {
+            CreditCardAccount creditCardAccount = new CreditCardAccount(primaryOwner,
+                    secondaryOwner, secretKey);
+            return creditCardAccountRepository.save(creditCardAccount);
+        } else {
+            CreditCardAccount creditCardAccount = new CreditCardAccount(primaryOwner,
+                    secondaryOwner, secretKey, interestRate, creditLimit);
+            return creditCardAccountRepository.save(creditCardAccount);
+        }
 
 
+
+
+    }
+
+
+
+
+    private User getSecondaryOwnerIfNotNull(AccountDto accountDto) {
+        User secondaryOwner;
+        if (accountDto.getSecondaryOwnerId() != null) {
+            secondaryOwner = userRepository.findById(accountDto.getSecondaryOwnerId()).get();
+        } else secondaryOwner = null;
+        return secondaryOwner;
+    }
 }

@@ -22,6 +22,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
     @Id
@@ -34,62 +35,28 @@ public class User {
 
     private String password;
 
-    @Column(name = "date_of_birth")
-    private LocalDate dateOfBirth;
-
-    @ManyToOne
-    @JoinColumn(name = "primary_address_id")
-    private Address primaryAddress;
-
-    @ManyToOne
-    @JoinColumn(name = "mailing_address_id")
-    private Address mailingAddress;
-
-    @Column(name = "hashed_key_third_party")
-    private String hashedKey;
-
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @Column(name = "role")
     @JsonManagedReference
     private Set<Role> roles;
 
 
-    //ADMIN constructor
-    public User(String name, String username, String password) {
-        setName(name);
-        setUsername(username);
-        setPassword(password);
-//        setRoles(roles);
-    }
 
-    //ACCOUNTHOLDER constructor
-    public User(String name, String username, String password, LocalDate dateOfBirth,
-                Address primaryAddress, Address mailingAddress, Set roles) {
+    public User(String name, String username, String password, Set<Role> roles) {
         setName(name);
         setUsername(username);
         setPassword(password);
         setRoles(roles);
-        setDateOfBirth(dateOfBirth);
-        setPrimaryAddress(primaryAddress);
-        setMailingAddress(mailingAddress);
     }
 
-    //THIRDPARTY constructor
-    public User (String name, String username, String password, String hashedKey) {
-        setName(name);
-        setUsername(username);
-        setPassword(password);
-//        setRoles(roles);
-        setHashedKey(hashedKey);
-    }
+
+
+
 
     public void setPassword(String password) {
         this.password = PasswordUtil.encryptPassword(password);
     }
 
-    public void setHashedKey(String hashedKey) {
-        this.hashedKey = PasswordUtil.encryptPassword(hashedKey);
-    }
 
 
 

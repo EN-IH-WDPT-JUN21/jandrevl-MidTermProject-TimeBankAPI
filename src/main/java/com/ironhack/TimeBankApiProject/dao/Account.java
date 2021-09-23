@@ -23,7 +23,7 @@ import java.time.LocalDate;
 public abstract class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "account_number")
     protected Long accountNumber;
 
