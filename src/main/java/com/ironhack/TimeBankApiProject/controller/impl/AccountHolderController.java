@@ -1,23 +1,128 @@
 package com.ironhack.TimeBankApiProject.controller.impl;
 
 
+import com.ironhack.TimeBankApiProject.controller.dto.TransferDto;
 import com.ironhack.TimeBankApiProject.controller.interfaces.IAccountHolderController;
+import com.ironhack.TimeBankApiProject.dao.Account;
+import com.ironhack.TimeBankApiProject.dao.AccountHolder;
+import com.ironhack.TimeBankApiProject.dao.Statement;
+import com.ironhack.TimeBankApiProject.dao.User;
+import com.ironhack.TimeBankApiProject.repository.AccountRepository;
+import com.ironhack.TimeBankApiProject.repository.StatementRepository;
+import com.ironhack.TimeBankApiProject.repository.UserRepository;
+import com.ironhack.TimeBankApiProject.utils.Money;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/accountholders")
 public class AccountHolderController implements IAccountHolderController {
 
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private StatementRepository statementRepository;
+
+
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public String helloCustomer() {
-        return "Dear Customer\n\nWelcome to TimeBank!";
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return "Dear Customer " + username + "\n\nWelcome to TimeBank!";
+    }
+
+
+    @GetMapping("/accounts")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Account> getAccountHolderAccounts() {
+
+        Long userId = getAuthenticatedUserId();
+
+        return accountRepository.findByOwner(userId);
+    }
+
+
+    @GetMapping("/accounts/balance/{accountNumber}")
+    @ResponseStatus(HttpStatus.OK)
+    public Money getAccountBalance(@PathVariable("accountNumber") Long accountNumber) {
+
+        Long userId = getAuthenticatedUserId();
+
+        User accountHolder = userRepository.findById(userId).get();
+
+//        List<Account> userAccounts = accountRepository.findByOwner(userId);
+
+        Account account = accountRepository.findByAccountNumber(accountNumber).get();
+
+        if(accountHolder != account.getPrimaryOwner() && accountHolder != account.getSecondaryOwner()) {
+            throw new IllegalArgumentException("You are not an Owner of this account");
+        }
+
+        return account.getBalance();
+
+    }
+
+
+    @PatchMapping("/transfers")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Statement moneyTransfer(@RequestBody @Valid TransferDto transferDto) {
+
+        Long userId = getAuthenticatedUserId();
+        User authenticatedUser = userRepository.findById(userId).get();
+
+        Account originAccount = accountRepository.findByAccountNumber(transferDto.getOriginAccountNumber()).get();
+
+        if(authenticatedUser != originAccount.getPrimaryOwner() &&
+                authenticatedUser != originAccount.getSecondaryOwner()) {
+            throw new IllegalArgumentException("You are not an Owner of the Origin Account");
+        }
+
+        Account beneficiaryAccount = accountRepository.findByAccountNumber(transferDto.getBeneficiaryAccountNumber()).get();
+
+        if (transferDto.getAmount().compareTo(originAccount.getBalance().getAmount()) > 0) {
+            throw new IllegalArgumentException("Not enough funds for this transfer");
+        }
+
+        Money newOriginBalance = new Money(originAccount.getBalance().decreaseAmount(transferDto.getAmount()));
+        Money newBeneficiaryBalance = new Money(beneficiaryAccount.getBalance().increaseAmount(transferDto.getAmount()));
+
+        originAccount.setBalance(newOriginBalance);
+        beneficiaryAccount.setBalance(newBeneficiaryBalance);
+
+        accountRepository.save(originAccount);
+        accountRepository.save(beneficiaryAccount);
+
+        Statement debit = new Statement(originAccount, "Transfer to " + transferDto.getBeneficiaryName(),
+                transferDto.getAmount().negate(), newOriginBalance);
+        Statement credit = new Statement(beneficiaryAccount, "transfer from " + originAccount.getPrimaryOwner().getName(),
+                transferDto.getAmount(), newBeneficiaryBalance);
+
+        statementRepository.save(debit);
+        statementRepository.save(credit);
+
+        return debit;
+
     }
 
 
 
+
+
+
+    private Long getAuthenticatedUserId() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Long userId = userRepository.findByUsername(username).get().getId();
+        return userId;
+    }
 }

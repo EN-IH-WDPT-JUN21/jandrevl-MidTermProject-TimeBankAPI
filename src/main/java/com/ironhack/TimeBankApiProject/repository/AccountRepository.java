@@ -18,4 +18,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query(value = "SELECT a FROM Account a INNER JOIN a.primaryOwner u WHERE a.primaryOwner.id = :userId")
     List<Account> findByPrimaryOwner(Long userId);
 
+    @Query(value = "SELECT a FROM Account a WHERE a.primaryOwner.id = :userId OR a.secondaryOwner.id = :userId")
+    List<Account> findByOwner(Long userId);
+
 }

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class CheckingAccountController implements ICheckingAccountController {
+public class AccountController implements ICheckingAccountController {
 
     @Autowired
     private AccountRepository accountRepository;
@@ -35,8 +35,13 @@ public class CheckingAccountController implements ICheckingAccountController {
     @ResponseStatus(HttpStatus.OK)
     public List<Account> getAccountsByPrimaryOwner(@PathVariable(name = "primaryOwner") Long userId) {
         return accountRepository.findByPrimaryOwner(userId);
+    }
 
 
+    @GetMapping("admin/accounts/accountholders/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Account> getAccountsByOwner(@PathVariable("id") Long id) {
+        return accountRepository.findByOwner(id);
     }
 
 

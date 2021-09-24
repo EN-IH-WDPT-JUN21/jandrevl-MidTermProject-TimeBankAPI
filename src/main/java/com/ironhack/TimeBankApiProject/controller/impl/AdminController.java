@@ -76,24 +76,27 @@ public class AdminController implements IAdminController {
 
         Set<Role> roles = new HashSet<>();
 
-        roles.add(roleRepository.findById(accountHolderDto.getRoleId()).get());
+        roles.add(roleRepository.findById(2L).get());
 
         String name = accountHolderDto.getName();
 
         String username = accountHolderDto.getUsername();
+        if(userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("Username already exists");
+        }
 
         LocalDate dateOfBirth = accountHolderDto.getDateOfBirth();
 
         String password = accountHolderDto.getPassword();
 
-        User user = new AccountHolder(name, username, password, dateOfBirth, primaryAddress,
+        AccountHolder accountHolder = new AccountHolder(name, username, password, dateOfBirth, primaryAddress,
                 mailingAddress, roles);
 
-        Role role = new Role(RoleTypes.ACCOUNTHOLDER, user);
-        userRepository.save(user);
+        Role role = new Role(RoleTypes.ACCOUNTHOLDER, accountHolder);
+        accountHolderRepository.save(accountHolder);
         roleRepository.save(role);
 
-        return user;
+        return accountHolder;
 
     }
 
@@ -227,4 +230,7 @@ public class AdminController implements IAdminController {
         return accountService.updateBalance(accountNumber, moneyBalance);
 
     }
+
+
+
 }
