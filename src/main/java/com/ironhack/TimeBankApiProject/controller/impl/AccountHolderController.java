@@ -11,6 +11,7 @@ import com.ironhack.TimeBankApiProject.enums.AccountStatus;
 import com.ironhack.TimeBankApiProject.repository.AccountRepository;
 import com.ironhack.TimeBankApiProject.repository.StatementRepository;
 import com.ironhack.TimeBankApiProject.repository.UserRepository;
+import com.ironhack.TimeBankApiProject.utils.Constants;
 import com.ironhack.TimeBankApiProject.utils.Money;
 import com.ironhack.TimeBankApiProject.utils.SecurityContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -115,8 +117,25 @@ public class AccountHolderController implements IAccountHolderController {
         Statement credit = new Statement(beneficiaryAccount, "transfer from " + originAccount.getPrimaryOwner().getName(),
                 transferDto.getAmount(), newBeneficiaryBalance);
 
+
         statementRepository.save(debit);
         statementRepository.save(credit);
+
+        Money oldOriginAccountBalance = new Money(newOriginBalance.getAmount().add(transferDto.getAmount()));
+
+        //Charge penalty fee if balance below minimum, but avoids double charge if balance already below minimum
+        if (newOriginBalance.getAmount().compareTo(originAccount.getMinimumBalance()) < 0 &&
+                oldOriginAccountBalance.getAmount().compareTo(originAccount.getMinimumBalance()) > 0) {
+
+            originAccount.setBalance(new Money(newOriginBalance.decreaseAmount(Constants.penaltyFee)));
+
+            Statement penaltyDebit = new Statement(originAccount, "Penalty fee - Balance below minimum",
+                    Constants.penaltyFee.negate(), originAccount.getBalance());
+
+            accountRepository.save(originAccount);
+            statementRepository.save(penaltyDebit);
+
+        }
 
         return debit;
 

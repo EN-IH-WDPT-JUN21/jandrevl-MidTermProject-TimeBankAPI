@@ -11,6 +11,7 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor
@@ -23,21 +24,18 @@ public class SavingsAccount extends Account{
     @Positive
     private BigDecimal interestRate;
 
+    @Column(name = "date_of_last_paid_interest")
+    private LocalDate dateOfLastInterest;
+
     //Constructor for checking accounts with 2 owners, default minimum Balance, default interestRate
     public SavingsAccount (User primaryOwner, User secondaryOwner,
                             String secretKey) {
         super(primaryOwner, secondaryOwner, secretKey);
         this.minimumBalance = new BigDecimal("1000");
         this.interestRate = new BigDecimal("0.0025");
+        setDateOfLastInterest(LocalDate.now());
     }
 
-    //Constructor for checking accounts with only 1 owner
-    public SavingsAccount (User primaryOwner,
-                            String secretKey) {
-        super(primaryOwner, secretKey);
-        this.minimumBalance = new BigDecimal("1000");
-        this.interestRate = new BigDecimal("0.0025");
-    }
 
     //Constructor for checking accounts with 2 owners and custom interest and minimumBalance
     public SavingsAccount (User primaryOwner, User secondaryOwner,
@@ -45,15 +43,8 @@ public class SavingsAccount extends Account{
         super(primaryOwner, secondaryOwner, secretKey);
         setMinimumBalance(minimumBalance);
         setInterestRate(interestRate);
+        setDateOfLastInterest(LocalDate.now());
 
     }
 
-    //Constructor for checking accounts with 1 owner and custom interest and minimumBalance
-    public SavingsAccount (User primaryOwner,
-                           String secretKey, BigDecimal minimumBalance, BigDecimal interestRate) {
-        super(primaryOwner, secretKey);
-        setMinimumBalance(minimumBalance);
-        setInterestRate(interestRate);
-
-    }
 }

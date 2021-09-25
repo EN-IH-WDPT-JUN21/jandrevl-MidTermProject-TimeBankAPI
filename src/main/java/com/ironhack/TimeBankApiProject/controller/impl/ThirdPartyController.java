@@ -8,6 +8,7 @@ import com.ironhack.TimeBankApiProject.dao.*;
 import com.ironhack.TimeBankApiProject.enums.AccountStatus;
 import com.ironhack.TimeBankApiProject.enums.RoleTypes;
 import com.ironhack.TimeBankApiProject.repository.*;
+import com.ironhack.TimeBankApiProject.utils.Constants;
 import com.ironhack.TimeBankApiProject.utils.Money;
 import com.ironhack.TimeBankApiProject.utils.SecurityContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,8 +105,29 @@ public class ThirdPartyController implements IThirdPartyController {
         accountRepository.save(account);
         statementRepository.save(transaction);
 
+        //Charges penalty fee only if initial balance is above minimum and final balance is below
+        BigDecimal initialBalance = finalBalance.add(thirdPartyTransactionDto.getAmount());
+
+        if (initialBalance.compareTo(account.getMinimumBalance()) > 0) {
+            chargePenaltyFeeIfBalanceBelowMinimum(account, finalBalance);
+        }
+
         return transactionDescription + " of " + new Money(thirdPartyTransactionDto.getAmount()).toString();
 
+    }
+
+    public void chargePenaltyFeeIfBalanceBelowMinimum(Account account, BigDecimal finalBalance) {
+        if (finalBalance.compareTo(account.getMinimumBalance()) < 0) {
+
+            account.setBalance(new Money(finalBalance.subtract(Constants.penaltyFee)));
+
+            Statement penaltyDebit = new Statement(account, "Penalty fee - Balance below minimum",
+                    Constants.penaltyFee.negate(), account.getBalance());
+
+            accountRepository.save(account);
+            statementRepository.save(penaltyDebit);
+
+        }
     }
 
 

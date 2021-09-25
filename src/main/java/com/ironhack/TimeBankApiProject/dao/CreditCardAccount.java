@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor
@@ -24,6 +25,9 @@ public class CreditCardAccount extends Account{
     @Column(name = "interest_rate")
     private BigDecimal interestRate;
 
+    @Column(name = "last_interest_date")
+    private LocalDate dateOfLastInterest;
+
     //Constructor for checking accounts with 2 owners, default creditLimit, default interestRate
     public CreditCardAccount (User primaryOwner, User secondaryOwner,
                            String secretKey) {
@@ -32,17 +36,9 @@ public class CreditCardAccount extends Account{
         setInterestRate(Constants.defaultCreditCardInterest);
         setCreditLimit(Constants.defaultCreditCardLimit);
         setBalance(new Money(this.creditLimit));
+        setDateOfLastInterest(LocalDate.now());
     }
 
-    //Constructor for checking accounts with only 1 owner, default creditLimit, default interestRate
-    public CreditCardAccount (User primaryOwner,
-                           String secretKey) {
-        super(primaryOwner, secretKey);
-        setMinimumBalance(new BigDecimal("0"));
-        setInterestRate(Constants.defaultCreditCardInterest);
-        setCreditLimit(Constants.defaultCreditCardLimit);
-        setBalance(new Money(this.creditLimit));
-    }
 
     //Constructor for checking accounts with 2 owners, custom creditLimit, custom interestRate
     public CreditCardAccount (User primaryOwner, User secondaryOwner,
@@ -52,17 +48,9 @@ public class CreditCardAccount extends Account{
         setInterestRate(interestRate);
         setCreditLimit(creditLimit);
         setBalance(new Money(this.creditLimit));
+        setDateOfLastInterest(LocalDate.now());
     }
 
-    //Constructor for checking accounts with only 1 owner, custom creditLimit, custom interestRate
-    public CreditCardAccount (User primaryOwner,
-                              String secretKey, BigDecimal interestRate, BigDecimal creditLimit) {
-        super(primaryOwner, secretKey);
-        setMinimumBalance(new BigDecimal("0"));
-        setInterestRate(interestRate);
-        setCreditLimit(creditLimit);
-        setBalance(new Money(this.creditLimit));
-    }
 
     @Override
     public void setBalance(Money balance) {

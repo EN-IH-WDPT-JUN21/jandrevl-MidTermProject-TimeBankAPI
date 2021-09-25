@@ -1,5 +1,6 @@
 package com.ironhack.TimeBankApiProject;
 
+import com.ironhack.TimeBankApiProject.dao.CheckingAccount;
 import com.ironhack.TimeBankApiProject.repository.*;
 import com.ironhack.TimeBankApiProject.utils.ScheduledTasks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,23 +9,26 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @SpringBootApplication
 public class TimeBankApiProjectApplication implements CommandLineRunner {
 
 	@Autowired
 	RoleRepository roleRepository;
-
 	@Autowired
 	UserRepository userRepository;
-
 	@Autowired
 	CheckingAccountRepository checkingAccountRepository;
-
 	@Autowired
 	SavingsAccountRepository savingsAccountRepository;
-
+	@Autowired
+	CreditCardAccountRepository creditCardAccountRepository;
 	@Autowired
 	AccountRepository accountRepository;
+	@Autowired
+	ScheduledTasks scheduledTasks;
 
 
 
@@ -65,6 +69,16 @@ public class TimeBankApiProjectApplication implements CommandLineRunner {
 
 //		ScheduledTasks t = new ScheduledTasks();
 //		t.repeatedPrint();
+
+//		LocalDate testDate = LocalDate.now().minusYears(1);
+//		List<CheckingAccount> accounts = checkingAccountRepository.findByDateOfLastMaintenanceFeeBefore(testDate);
+//
+//		for(CheckingAccount account : accounts) {
+//			System.out.println(account.getDateOfLastMaintenanceFee());
+//		}
+
+//		scheduledTasks.chargeInterest(creditCardAccountRepository.findByAccountNumber(3L).get());
+
 
 	}
 
