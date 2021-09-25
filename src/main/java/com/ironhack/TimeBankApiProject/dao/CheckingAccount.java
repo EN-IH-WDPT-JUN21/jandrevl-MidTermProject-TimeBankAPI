@@ -30,7 +30,7 @@ public class CheckingAccount extends Account {
     public CheckingAccount (User primaryOwner, User secondaryOwner,
                             String secretKey) {
         super(primaryOwner, secondaryOwner, secretKey);
-        setMinimumBalance(new BigDecimal("250"));
+        setMinimumBalance(Constants.checkingAccountMinimumBalance);
         setDateOfLastMaintenanceFee(LocalDate.now());
     }
 
@@ -38,7 +38,7 @@ public class CheckingAccount extends Account {
     public CheckingAccount (User primaryOwner,
                             String secretKey) {
         super(primaryOwner, secretKey);
-        setMinimumBalance(new BigDecimal("250"));
+        setMinimumBalance(Constants.checkingAccountMinimumBalance);
         setDateOfLastMaintenanceFee(LocalDate.now());
 //
     }

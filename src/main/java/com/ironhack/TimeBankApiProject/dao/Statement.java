@@ -35,7 +35,7 @@ public class Statement {
     private BigDecimal amount;
 
     @Embedded
-    @Column(name = "account_balance")
+    @AttributeOverride( name = "amount", column = @Column(name = "balance"))
     private Money remainingAccountBalance;
 
     public Statement(Account account, String description, BigDecimal amount, Money remainingAccountBalance) {

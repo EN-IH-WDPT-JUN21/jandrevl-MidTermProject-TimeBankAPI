@@ -1,4 +1,4 @@
 package com.ironhack.TimeBankApiProject.controller.interfaces;
 
-public interface ISavingsAccountStatementController {
+public interface IAccountController {
 }

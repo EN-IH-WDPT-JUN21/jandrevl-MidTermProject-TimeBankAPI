@@ -17,7 +17,6 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -52,7 +51,6 @@ public class AdminController implements IAdminController {
     public String printHelloTimeBank() {
         return "Dear Administrator,\n\nWelcome to TimeBank!! Use your Power wisely";
     }
-
 
 
     @GetMapping("/users/{id}")
@@ -148,7 +146,7 @@ public class AdminController implements IAdminController {
     @ResponseStatus(HttpStatus.CREATED)
     public SavingsAccount createSavingsAccount(@RequestBody @Valid AccountDto accountDto) {
 
-        if(accountDto.getMinimumBalance() == null && accountDto.getInterestRate() == null) {
+        if(accountDto.getMinimumBalance() == null && accountDto.getSavingsInterestRate() == null) {
 
             return openSavingsWithDefaultInterestAndMinimumBalance(accountDto);
 
@@ -180,7 +178,7 @@ public class AdminController implements IAdminController {
 
         BigDecimal minimumBalance = accountDto.getMinimumBalance();
 
-        BigDecimal interestRate = accountDto.getInterestRate();
+        BigDecimal interestRate = accountDto.getSavingsInterestRate();
 
         return savingsAccountRepository.save(new SavingsAccount(primaryOwner, secondaryOwner,
                 secretKey, minimumBalance, interestRate));
@@ -197,7 +195,7 @@ public class AdminController implements IAdminController {
 
         String secretKey = accountDto.getSecretKey();
 
-        BigDecimal interestRate = accountDto.getInterestRate();
+        BigDecimal interestRate = accountDto.getCreditCardInterestRate();
 
         BigDecimal creditLimit = accountDto.getCreditLimit();
 

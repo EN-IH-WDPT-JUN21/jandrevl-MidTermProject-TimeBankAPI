@@ -2,18 +2,22 @@ package com.ironhack.TimeBankApiProject.controller.impl;
 
 
 import com.ironhack.TimeBankApiProject.controller.dto.ThirdPartyDto;
+import com.ironhack.TimeBankApiProject.controller.dto.ThirdPartyTransactionDto;
 import com.ironhack.TimeBankApiProject.controller.interfaces.IThirdPartyController;
-import com.ironhack.TimeBankApiProject.dao.Role;
-import com.ironhack.TimeBankApiProject.dao.ThirdParty;
+import com.ironhack.TimeBankApiProject.dao.*;
+import com.ironhack.TimeBankApiProject.enums.AccountStatus;
 import com.ironhack.TimeBankApiProject.enums.RoleTypes;
-import com.ironhack.TimeBankApiProject.repository.RoleRepository;
-import com.ironhack.TimeBankApiProject.repository.ThirdPartyRepository;
-import com.ironhack.TimeBankApiProject.repository.UserRepository;
+import com.ironhack.TimeBankApiProject.repository.*;
+import com.ironhack.TimeBankApiProject.utils.Money;
+import com.ironhack.TimeBankApiProject.utils.SecurityContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,6 +30,14 @@ public class ThirdPartyController implements IThirdPartyController {
     private ThirdPartyRepository thirdPartyRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private StatementRepository statementRepository;
+    @Autowired
+    private SecurityContextUtils securityContextUtils;
+
+
 
     @GetMapping("/thirdparty")
     @ResponseStatus(HttpStatus.OK)
@@ -54,6 +66,46 @@ public class ThirdPartyController implements IThirdPartyController {
         roleRepository.save(role);
 
         return thirdParty;
+    }
+
+    @PatchMapping("/thirdparty/transactions")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String thirdPartyTransaction(@RequestBody @Valid ThirdPartyTransactionDto thirdPartyTransactionDto) {
+
+        Account account = accountRepository.findByAccountNumber(thirdPartyTransactionDto.getAccount()).get();
+
+        User thirdParty = userRepository.findById(securityContextUtils.getAuthenticatedUserId()).get();
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        if(passwordEncoder.matches(account.getSecretKey(), thirdPartyTransactionDto.getAccountSecretKey())) {
+            throw new IllegalArgumentException("Secret Keys do not match");
+        }
+
+        BigDecimal finalBalance = account.getBalance().getAmount().add(thirdPartyTransactionDto.getAmount());
+
+        //if the account is frozen and the transaction is a debit transaction, the transaction is not possible
+        if (account.getStatus() == AccountStatus.FROZEN &&
+                thirdPartyTransactionDto.getAmount().compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalStateException("Transaction not possible");
+        }
+
+        if(finalBalance.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalStateException("Insufficient funds");
+        }
+
+        account.setBalance(new Money(finalBalance));
+
+        String transactionDescription = "Transaction by " + thirdParty.getName();
+
+        Statement transaction = new Statement(account, transactionDescription, thirdPartyTransactionDto.getAmount(),
+                account.getBalance());
+
+        accountRepository.save(account);
+        statementRepository.save(transaction);
+
+        return transactionDescription + " of " + new Money(thirdPartyTransactionDto.getAmount()).toString();
+
     }
 
 

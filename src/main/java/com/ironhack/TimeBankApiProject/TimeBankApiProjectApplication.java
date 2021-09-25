@@ -1,20 +1,12 @@
 package com.ironhack.TimeBankApiProject;
 
-import com.ironhack.TimeBankApiProject.dao.CheckingAccount;
-import com.ironhack.TimeBankApiProject.dao.Role;
-import com.ironhack.TimeBankApiProject.dao.User;
-import com.ironhack.TimeBankApiProject.enums.RoleTypes;
-import com.ironhack.TimeBankApiProject.repository.CheckingAccountRepository;
-import com.ironhack.TimeBankApiProject.repository.RoleRepository;
-import com.ironhack.TimeBankApiProject.repository.UserRepository;
-import com.ironhack.TimeBankApiProject.utils.Money;
-import com.ironhack.TimeBankApiProject.utils.PasswordUtil;
+import com.ironhack.TimeBankApiProject.repository.*;
+import com.ironhack.TimeBankApiProject.utils.ScheduledTasks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.math.BigDecimal;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 public class TimeBankApiProjectApplication implements CommandLineRunner {
@@ -27,6 +19,12 @@ public class TimeBankApiProjectApplication implements CommandLineRunner {
 
 	@Autowired
 	CheckingAccountRepository checkingAccountRepository;
+
+	@Autowired
+	SavingsAccountRepository savingsAccountRepository;
+
+	@Autowired
+	AccountRepository accountRepository;
 
 
 
@@ -59,6 +57,15 @@ public class TimeBankApiProjectApplication implements CommandLineRunner {
 //		checkingAccount1.setBalance(newBalance);
 //		checkingAccountRepository.save(checkingAccount1);
 
+//		System.out.println(savingsAccountRepository.findById(12L).get().getInterestRate());
+
+
+//		accountRepository.findById(3L).get().setBalance(new Money(new BigDecimal("200")));
+
+
+//		ScheduledTasks t = new ScheduledTasks();
+//		t.repeatedPrint();
 
 	}
+
 }

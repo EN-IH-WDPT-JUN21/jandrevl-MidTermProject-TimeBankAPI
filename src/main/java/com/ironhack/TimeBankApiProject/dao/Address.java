@@ -32,7 +32,7 @@ public class Address {
 //    @NotBlank
     @NotNull
     @Column(name = "zip_code")
-    @Digits(integer = 4, fraction = 0, message = "Invalid zip code")
+    @Digits(integer = 10, fraction = 0, message = "Invalid zip code")
     private Long zipCode;
 
     @NotEmpty

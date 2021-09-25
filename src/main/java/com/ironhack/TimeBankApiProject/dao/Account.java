@@ -39,7 +39,7 @@ public abstract class Account {
 
     @Embedded
     @AttributeOverride( name = "amount", column = @Column(name = "balance"))
-    private Money balance;
+    protected Money balance;
 
     @Column(name = "penalty_fee")
     private final BigDecimal penaltyFee = Constants.penaltyFee;

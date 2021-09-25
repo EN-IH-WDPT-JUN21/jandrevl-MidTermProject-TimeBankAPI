@@ -12,6 +12,20 @@ INSERT INTO role (id, role_name, user_id) VALUES
 ('2', 'ACCOUNTHOLDER', '2');
 
 
+INSERT INTO `timebankdatabase`.`address`
+(`address_id`,
+`city`,
+`country`,
+`street_and_number`,
+`zip_code`)
+VALUES
+(1, 'Olhao', 'Portugal', 'R Dr Antonio Malafaia Bl3', 8700),
+(2, 'Faro', 'Portugal', 'R Antonio Bivar', 8000),
+(3, 'Springfield', 'USA', 'Simpsons Drv', 1234),
+(1, 'Huelva', 'Spain', 'Calle Cerveza', 5678);
+
+
+
 
 
 

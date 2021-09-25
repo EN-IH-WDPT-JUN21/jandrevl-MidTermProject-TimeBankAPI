@@ -1,10 +1,8 @@
 package com.ironhack.TimeBankApiProject.controller.impl;
 
-import com.ironhack.TimeBankApiProject.controller.interfaces.ICheckingAccountController;
+import com.ironhack.TimeBankApiProject.controller.interfaces.IAccountController;
 import com.ironhack.TimeBankApiProject.dao.Account;
-import com.ironhack.TimeBankApiProject.dao.CheckingAccount;
 import com.ironhack.TimeBankApiProject.repository.AccountRepository;
-import com.ironhack.TimeBankApiProject.repository.CheckingAccountRepository;
 import com.ironhack.TimeBankApiProject.utils.Money;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class AccountController implements ICheckingAccountController {
+public class AccountController implements IAccountController {
 
     @Autowired
     private AccountRepository accountRepository;

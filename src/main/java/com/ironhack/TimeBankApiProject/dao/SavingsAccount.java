@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
@@ -18,7 +19,7 @@ import java.math.BigDecimal;
 @Setter
 public class SavingsAccount extends Account{
 
-    @Column(name = "savings_interest_rate")
+    @Column(name = "savings_interest_rate", columnDefinition = "DECIMAL(5,5)")
     @Positive
     private BigDecimal interestRate;
 

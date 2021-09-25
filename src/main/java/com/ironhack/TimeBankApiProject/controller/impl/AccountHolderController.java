@@ -7,10 +7,12 @@ import com.ironhack.TimeBankApiProject.dao.Account;
 import com.ironhack.TimeBankApiProject.dao.AccountHolder;
 import com.ironhack.TimeBankApiProject.dao.Statement;
 import com.ironhack.TimeBankApiProject.dao.User;
+import com.ironhack.TimeBankApiProject.enums.AccountStatus;
 import com.ironhack.TimeBankApiProject.repository.AccountRepository;
 import com.ironhack.TimeBankApiProject.repository.StatementRepository;
 import com.ironhack.TimeBankApiProject.repository.UserRepository;
 import com.ironhack.TimeBankApiProject.utils.Money;
+import com.ironhack.TimeBankApiProject.utils.SecurityContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +32,8 @@ public class AccountHolderController implements IAccountHolderController {
     private AccountRepository accountRepository;
     @Autowired
     private StatementRepository statementRepository;
+    @Autowired
+    private SecurityContextUtils securityContextUtils;
 
 
     @GetMapping("")
@@ -46,7 +50,7 @@ public class AccountHolderController implements IAccountHolderController {
     @ResponseStatus(HttpStatus.OK)
     public List<Account> getAccountHolderAccounts() {
 
-        Long userId = getAuthenticatedUserId();
+        Long userId = securityContextUtils.getAuthenticatedUserId();
 
         return accountRepository.findByOwner(userId);
     }
@@ -56,7 +60,7 @@ public class AccountHolderController implements IAccountHolderController {
     @ResponseStatus(HttpStatus.OK)
     public Money getAccountBalance(@PathVariable("accountNumber") Long accountNumber) {
 
-        Long userId = getAuthenticatedUserId();
+        Long userId = securityContextUtils.getAuthenticatedUserId();
 
         User accountHolder = userRepository.findById(userId).get();
 
@@ -77,10 +81,14 @@ public class AccountHolderController implements IAccountHolderController {
     @ResponseStatus(HttpStatus.CREATED)
     public Statement moneyTransfer(@RequestBody @Valid TransferDto transferDto) {
 
-        Long userId = getAuthenticatedUserId();
+        Long userId = securityContextUtils.getAuthenticatedUserId();
         User authenticatedUser = userRepository.findById(userId).get();
 
         Account originAccount = accountRepository.findByAccountNumber(transferDto.getOriginAccountNumber()).get();
+
+        if (originAccount.getStatus() == AccountStatus.FROZEN) {
+            throw new IllegalStateException("Transaction not possible");
+        }
 
         if(authenticatedUser != originAccount.getPrimaryOwner() &&
                 authenticatedUser != originAccount.getSecondaryOwner()) {
@@ -114,15 +122,4 @@ public class AccountHolderController implements IAccountHolderController {
 
     }
 
-
-
-
-
-
-    private Long getAuthenticatedUserId() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        Long userId = userRepository.findByUsername(username).get().getId();
-        return userId;
-    }
 }
