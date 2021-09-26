@@ -40,4 +40,7 @@ public class Role {
     }
 
 
+    public Role(RoleTypes name) {
+        setName(name);
+    }
 }

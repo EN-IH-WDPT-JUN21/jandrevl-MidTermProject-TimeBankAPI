@@ -26,7 +26,7 @@ public class Main {
 //        Money money = new Money(new BigDecimal("5500000"));
 //        System.out.println(money.toString());
 
-        System.out.println(PasswordUtil.encryptPassword("secretkey"));
+        System.out.println(PasswordUtil.encryptPassword("password"));
 
         System.out.println(LocalDateTime.now());
 

@@ -1,6 +1,7 @@
 package com.ironhack.TimeBankApiProject;
 
 import com.ironhack.TimeBankApiProject.dao.CheckingAccount;
+import com.ironhack.TimeBankApiProject.dao.SavingsAccount;
 import com.ironhack.TimeBankApiProject.repository.*;
 import com.ironhack.TimeBankApiProject.utils.ScheduledTasks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -78,6 +81,15 @@ public class TimeBankApiProjectApplication implements CommandLineRunner {
 //		}
 
 //		scheduledTasks.chargeInterest(creditCardAccountRepository.findByAccountNumber(3L).get());
+
+//		SavingsAccount account = savingsAccountRepository.findById(4L).get();
+//		BigDecimal interestRate = account.getInterestRate();
+//		BigDecimal savingsBalance = account.getBalance().getAmount();
+//		BigDecimal yearlyInterest = savingsBalance.multiply(interestRate).setScale(2, RoundingMode.HALF_EVEN);
+//		System.out.println(yearlyInterest);
+
+//		List<SavingsAccount> accounts = savingsAccountRepository.findByDateOfLastInterestBefore(LocalDate.now().minusYears(1));
+//		scheduledTasks.yearlySavingsInterestCredit(accounts);
 
 
 	}

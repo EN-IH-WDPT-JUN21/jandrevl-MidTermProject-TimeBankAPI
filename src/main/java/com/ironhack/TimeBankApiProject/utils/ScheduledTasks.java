@@ -2,9 +2,11 @@ package com.ironhack.TimeBankApiProject.utils;
 
 import com.ironhack.TimeBankApiProject.dao.CheckingAccount;
 import com.ironhack.TimeBankApiProject.dao.CreditCardAccount;
+import com.ironhack.TimeBankApiProject.dao.SavingsAccount;
 import com.ironhack.TimeBankApiProject.dao.Statement;
 import com.ironhack.TimeBankApiProject.repository.CheckingAccountRepository;
 import com.ironhack.TimeBankApiProject.repository.CreditCardAccountRepository;
+import com.ironhack.TimeBankApiProject.repository.SavingsAccountRepository;
 import com.ironhack.TimeBankApiProject.repository.StatementRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,6 +39,8 @@ public class ScheduledTasks {
     private StatementRepository statementRepository;
     @Autowired
     private CreditCardAccountRepository creditCardAccountRepository;
+    @Autowired
+    private SavingsAccountRepository savingsAccountRepository;
 
     //Teste
 //    @Scheduled(cron = "0/4 * * * * * ")
@@ -56,12 +60,19 @@ public class ScheduledTasks {
         List<CreditCardAccount> creditCardAccounts = creditCardAccountRepository
                 .findByDateOfLastInterestBefore(oneMonthAgoToday);
 
+        List<SavingsAccount> savingsAccounts = savingsAccountRepository
+                .findByDateOfLastInterestBefore(oneYearAgoToday);
+
         if (!checkingAccounts.isEmpty()) {
             monthlyMaintenanceFeeCharge(checkingAccounts);
         }
 
         if(!creditCardAccounts.isEmpty()) {
             monthlyCreditCardInterestCharge(creditCardAccounts);
+        }
+
+        if(!savingsAccounts.isEmpty()) {
+            yearlySavingsInterestCredit(savingsAccounts);
         }
 
     }
@@ -89,7 +100,6 @@ public class ScheduledTasks {
     }
 
 
-
     public void monthlyCreditCardInterestCharge(List<CreditCardAccount> accounts) {
 
         for(CreditCardAccount account: accounts) {
@@ -113,7 +123,30 @@ public class ScheduledTasks {
         statementRepository.save(debitInterest);
     }
 
-//    public void yearlySavingsInterestCredit(List<>)
+
+    public void yearlySavingsInterestCredit(List<SavingsAccount> accounts) {
+        for ( SavingsAccount account : accounts) {
+            payInterest(account);
+        }
+    }
+
+    public void payInterest(SavingsAccount account) {
+
+        BigDecimal interestRate = account.getInterestRate();
+        BigDecimal savingsBalance = account.getBalance().getAmount();
+        BigDecimal yearlyInterest = savingsBalance.multiply(interestRate).setScale(2, RoundingMode.HALF_EVEN);
+
+        BigDecimal newBalance = savingsBalance.add(yearlyInterest);
+
+        account.setBalance(new Money(newBalance));
+        account.setDateOfLastInterest(LocalDate.now());
+
+        Statement creditInterest = new Statement(account, "Yearly Interest Payment",
+                yearlyInterest, new Money(newBalance));
+
+        savingsAccountRepository.save(account);
+        statementRepository.save(creditInterest);
+    }
 
 
 }

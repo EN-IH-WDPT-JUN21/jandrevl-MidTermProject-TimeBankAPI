@@ -97,7 +97,8 @@ public class AccountHolderController implements IAccountHolderController {
             throw new IllegalArgumentException("You are not an Owner of the Origin Account");
         }
 
-        Account beneficiaryAccount = accountRepository.findByAccountNumber(transferDto.getBeneficiaryAccountNumber()).get();
+        Account beneficiaryAccount =
+                accountRepository.findByAccountNumber(transferDto.getBeneficiaryAccountNumber()).get();
 
         if (transferDto.getAmount().compareTo(originAccount.getBalance().getAmount()) > 0) {
             throw new IllegalArgumentException("Not enough funds for this transfer");
@@ -114,9 +115,9 @@ public class AccountHolderController implements IAccountHolderController {
 
         Statement debit = new Statement(originAccount, "Transfer to " + transferDto.getBeneficiaryName(),
                 transferDto.getAmount().negate(), newOriginBalance);
-        Statement credit = new Statement(beneficiaryAccount, "transfer from " + originAccount.getPrimaryOwner().getName(),
+        Statement credit = new Statement(beneficiaryAccount,
+                "Transfer from " + originAccount.getPrimaryOwner().getName(),
                 transferDto.getAmount(), newBeneficiaryBalance);
-
 
         statementRepository.save(debit);
         statementRepository.save(credit);
