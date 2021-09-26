@@ -8,7 +8,9 @@ VALUES
 (4, 'Banco Santander', '$2a$10$6EppIKnQboNTfBW3IYwwE.hN/AVp5BXAKT0mOtYknwS82p8uxc.s6', 'santander'),
 (5, 'Revolut', '$2a$10$6EppIKnQboNTfBW3IYwwE.hN/AVp5BXAKT0mOtYknwS82p8uxc.s6', 'revolut'),
 (6, 'Rick Sanchez', '$2a$10$6EppIKnQboNTfBW3IYwwE.hN/AVp5BXAKT0mOtYknwS82p8uxc.s6', 'picklerick'),
-(7, 'Stan Smith', '$2a$10$6EppIKnQboNTfBW3IYwwE.hN/AVp5BXAKT0mOtYknwS82p8uxc.s6', 'stan');
+(7, 'Stan Smith', '$2a$10$6EppIKnQboNTfBW3IYwwE.hN/AVp5BXAKT0mOtYknwS82p8uxc.s6', 'stan'),
+(8, 'Morty Smith', '$2a$10$6EppIKnQboNTfBW3IYwwE.hN/AVp5BXAKT0mOtYknwS82p8uxc.s6', 'morty'),
+(9, 'Francine Smith', '$2a$10$6EppIKnQboNTfBW3IYwwE.hN/AVp5BXAKT0mOtYknwS82p8uxc.s6', 'francine');
 
 
 
@@ -23,7 +25,9 @@ VALUES
 (4, 'THIRDPARTY', 4),
 (5, 'THIRDPARTY', 5),
 (6, 'ACCOUNTHOLDER', 6),
-(7, 'ACCOUNTHOLDER', 7);
+(7, 'ACCOUNTHOLDER', 7),
+(8, 'ACCOUNTHOLDER', 8),
+(9, 'ACCOUNTHOLDER', 9);
 
 
 
@@ -43,7 +47,9 @@ VALUES
 ('1968-05-01', 2, 1),
 ('1962-12-01', 3, 2),
 ('1968-05-01', 6, 3),
-('1968-05-01', 7, 4);
+('1968-05-01', 7, 4),
+('2010-05-01', 8, 3),
+('1972-05-01', 9, 4);
 
 
 
@@ -63,7 +69,7 @@ VALUES
 
 --With primaryOwner only
 INSERT INTO account
-(`account_number`,`balance`,`currency`,`creation_date`,`minimum_balance`,`penalty_fee`,`secret_key`,`account_status`,
+(account_number, `balance`,`currency`,`creation_date`,`minimum_balance`,`penalty_fee`,`secret_key`,`account_status`,
 `primary_owner`)
 VALUES
 (1, 800, 'EUR', '2010-01-01', 250, 40, '$2a$10$6EppIKnQboNTfBW3IYwwE.hN/AVp5BXAKT0mOtYknwS82p8uxc.s6',
@@ -79,7 +85,7 @@ VALUES
 
 --With secondaryOwner also
 INSERT INTO account
-(`account_number`,`balance`,`currency`,`creation_date`,`minimum_balance`,`penalty_fee`,`secret_key`,`account_status`,
+(account_number, `balance`,`currency`,`creation_date`,`minimum_balance`,`penalty_fee`,`secret_key`,`account_status`,
 `primary_owner`,`secondary_owner`)
 VALUES
 (6, 1320, 'EUR', '2015-01-01', 250, 40, '$2a$10$6EppIKnQboNTfBW3IYwwE.hN/AVp5BXAKT0mOtYknwS82p8uxc.s6',
