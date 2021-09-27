@@ -54,11 +54,7 @@ public class TimeBankApiProjectApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) {
 
-		Account tiago4 = accountRepository.findByAccountNumber(4L).get();
 
-		List<Statement> statement = statementRepository.findByAccountAndMomentOfTransactionAfter(tiago4, LocalDateTime.now().minusDays(1).minusHours(17));
-
-		System.out.println(statement.size());
 
 
 

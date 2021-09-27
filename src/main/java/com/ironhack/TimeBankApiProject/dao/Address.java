@@ -44,6 +44,7 @@ public class Address {
     private String country;
 
     public Address (String streetAndNumber, Long zipCode, String city, String country) {
+        if(!(streetAndNumber instanceof String)) throw new IllegalArgumentException("has to be a string");
         setStreetAndNumber(streetAndNumber);
         setZipCode(zipCode);
         setCity(city);

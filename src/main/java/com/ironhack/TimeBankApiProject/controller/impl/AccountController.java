@@ -21,7 +21,7 @@ public class AccountController implements IAccountController {
     private AccountRepository accountRepository;
 
 
-    @GetMapping("admin/accounts/balance/{accountNumber}")
+    @GetMapping("admin/accounts/balances/{accountNumber}")
     @ResponseStatus(HttpStatus.OK)
     public Money getBalanceByAccountNumber(@PathVariable(name = "accountNumber") Long accountNumber) {
         Optional<Account> optionalAccount = accountRepository.findByAccountNumber(accountNumber);

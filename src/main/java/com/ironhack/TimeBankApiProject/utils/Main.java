@@ -28,12 +28,6 @@ public class Main {
 
         System.out.println(PasswordUtil.encryptPassword("password"));
 
-        System.out.println(LocalDateTime.now());
-
-        BigDecimal annualInterest = new BigDecimal("0.2");
-        BigDecimal monthlyInterest = annualInterest.divide(new BigDecimal("12"), 4, RoundingMode.HALF_EVEN);
-        System.out.println(monthlyInterest);
-
 
 
 

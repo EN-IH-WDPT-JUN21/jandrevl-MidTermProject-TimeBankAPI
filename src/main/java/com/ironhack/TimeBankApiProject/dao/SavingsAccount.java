@@ -1,5 +1,6 @@
 package com.ironhack.TimeBankApiProject.dao;
 
+import com.ironhack.TimeBankApiProject.utils.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +32,8 @@ public class SavingsAccount extends Account{
     public SavingsAccount (User primaryOwner, User secondaryOwner,
                             String secretKey) {
         super(primaryOwner, secondaryOwner, secretKey);
-        this.minimumBalance = new BigDecimal("1000");
-        this.interestRate = new BigDecimal("0.0025");
+        setMinimumBalance(Constants.defaultSavingsMinimumBalance);
+        setInterestRate(Constants.defaultSavingsInterest);
         setDateOfLastInterest(LocalDate.now());
     }
 

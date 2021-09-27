@@ -4,6 +4,9 @@ Under Construction...
 
 ![](src/main/resources/images/TimeBankLogo.JPG)
 
+
+## Routes for ADMIN profile users
+
 ###GET: /admin
 
 ###GET: /admin/users/{id}
@@ -39,7 +42,7 @@ Under Construction...
 - "creditCardInterestRate": BigDecimal (optional. x >= 0.1. If present, creditLimit must be defined),
 - "creditLimit": BigDecimal (optional. 0 < x < 100000. If present, creditCardInterestRate must be defined)
 
-###GET: /admin/accounts/balance/{accountNumber}
+###GET: /admin/accounts/balances/{accountNumber}
 
 ###PATCH: /admin/accounts/balances/{accountNumber}
 - "balance": BigDecimal
@@ -53,6 +56,13 @@ Under Construction...
 ###GET: /admin/addresses/{id}
 
 ###POST: /admin/thirdparties
+- "name": String,
+- "username": String,
+- "password": String,
+- "hashedKey": String (encrypted)
+
+
+##Routes for ACCOUNTHOLDER profile users
 
 ###GET: /accountholders
 
@@ -61,8 +71,17 @@ Under Construction...
 ###GET: /accountholders/accounts/balance/{accountNumber}
 
 ###PATCH: /accountholders/transfers
+- "originAccountNumber": Long,
+- "beneficiaryAccountNumber": Long,
+- "beneficiaryName": String (minimum 3 chars),
+- "amount": BigDecimal (positive)
+
+
+##Routes for THIRDPARTY profile users
 
 ###PATCH: /thirdparty/transactions
-
+- "account": Long,
+- "amount": BigDecimal,
+- "accountSecretKey": String (encrypted. rawPassword must be the same as rawPassword of account)
 
 
