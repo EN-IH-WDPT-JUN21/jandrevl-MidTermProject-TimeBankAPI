@@ -12,6 +12,7 @@ import com.ironhack.TimeBankApiProject.repository.AccountRepository;
 import com.ironhack.TimeBankApiProject.repository.StatementRepository;
 import com.ironhack.TimeBankApiProject.repository.UserRepository;
 import com.ironhack.TimeBankApiProject.utils.Constants;
+import com.ironhack.TimeBankApiProject.utils.FraudDetection;
 import com.ironhack.TimeBankApiProject.utils.Money;
 import com.ironhack.TimeBankApiProject.utils.SecurityContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class AccountHolderController implements IAccountHolderController {
     private StatementRepository statementRepository;
     @Autowired
     private SecurityContextUtils securityContextUtils;
+    @Autowired
+    private FraudDetection fraudDetection;
 
 
     @GetMapping("")
@@ -137,6 +140,9 @@ public class AccountHolderController implements IAccountHolderController {
             statementRepository.save(penaltyDebit);
 
         }
+
+        fraudDetection.fraudDetectionRoutine(originAccount);
+        fraudDetection.fraudDetectionRoutine(beneficiaryAccount);
 
         return debit;
 

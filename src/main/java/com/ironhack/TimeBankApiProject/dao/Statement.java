@@ -1,6 +1,8 @@
 package com.ironhack.TimeBankApiProject.dao;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.TimeBankApiProject.utils.Money;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

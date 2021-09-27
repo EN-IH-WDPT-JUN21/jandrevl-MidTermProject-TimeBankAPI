@@ -1,6 +1,7 @@
 package com.ironhack.TimeBankApiProject.dao;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironhack.TimeBankApiProject.enums.AccountStatus;
 import com.ironhack.TimeBankApiProject.utils.Constants;
 import com.ironhack.TimeBankApiProject.utils.Money;
