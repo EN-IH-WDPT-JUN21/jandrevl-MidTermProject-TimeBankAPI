@@ -38,7 +38,7 @@ public class FraudDetection {
         updateTotalAmountEver();
 
         if(areThereMoreThan2TransactionsInLastSecond(susAccount) ||
-                totalOf24HoursOfSusAccount(susAccount).compareTo(getTotalAmountEver()) >0) {
+                totalOf24HoursOfSusAccount(susAccount).compareTo(getTotalAmountEver().multiply(new BigDecimal("1.5"))) >0) {
 
             susAccount.setStatus(AccountStatus.FROZEN);
         }
