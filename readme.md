@@ -1,6 +1,6 @@
 ![](src/main/resources/images/TimeBankLogo.JPG)
 
-#TimeBank API
+# TimeBank API
 
 
 This program simulates, in a very basic way, an API for a virtual Bank, **TimeBank**.
