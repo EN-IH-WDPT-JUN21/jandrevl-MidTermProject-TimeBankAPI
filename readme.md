@@ -1,8 +1,30 @@
-Under Construction...
-
-
 
 ![](src/main/resources/images/TimeBankLogo.JPG)
+
+#TimeBank API
+
+This program simulates, in a very basic way, an API for a virtual Bank, **TimeBank**.
+
+The database used is H2, both for the main application and for tests, but it could easily be implemented in more
+"persistent" dabase systems, like MySQL. H2 was chosen because of the lack of "prework" necessary to run the demonstration
+program. 
+
+Please run the `TimeBankApiProjectApplication` main to start the app. Routes can be tested and used with 
+the help of Postman.
+
+All existing passwords and hashKeys are the raw password "password" encrypted, for ease of testing.
+
+Below are all routes created, and when applicable, the configuration of the JSON payload
+to be used in a particular request.
+
+Savings and Card Account interests, and other periodic fees are credited/debited 
+with a Scheduled routine, defined in the class `ScheduledTasks`, in the `utils` package.
+These would take place every day at 2:00AM. The crono definition in the `@Scheduled` annotation can be 
+changed for testing.
+
+The fraud detection mechanisms are implemented in the `FraudDetection` class, in the `utils` package.
+
+Please enjoy.
 
 
 ## Routes for ADMIN profile users
@@ -85,3 +107,6 @@ Under Construction...
 - "accountSecretKey": String (encrypted. rawPassword must be the same as rawPassword of account)
 
 
+##Class Relations Diagram
+
+![](src/main/resources/images/class_relations_diagram.png)
