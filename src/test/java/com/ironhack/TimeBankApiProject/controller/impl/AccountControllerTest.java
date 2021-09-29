@@ -54,7 +54,7 @@ class AccountControllerTest {
     void getBalanceByAccountNumber() throws Exception {
 
         MvcResult result = mockMvc.perform(
-                get("/admin/accounts/balance/1")
+                get("/admin/accounts/balances/1")
         ).andExpect(status().isOk()).andReturn();
 
         assertTrue(result.getResponse().getContentAsString().contains("800"));
